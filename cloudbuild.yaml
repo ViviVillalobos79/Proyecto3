@@ -32,7 +32,7 @@ steps:
   args:
   - '-c'
   - >
-  kubectl proxy --port=8080 &
+    kubectl proxy --port=8080 &;
     skaffold run -f=skaffold.yaml --default-repo=gcr.io/$PROJECT_ID;
     kubectl apply -f ./release/kubernetes-manifests.yaml
 
