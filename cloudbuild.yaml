@@ -27,11 +27,12 @@
 
 steps:
 - id: 'Deploy application to cluster'
-  name: 'gcr.io/k8s-skaffold/skaffold:v1.38.0'
+  name: 'gcr.io/k8s-skaffold/skaffold:v0.20.0'
   entrypoint: 'bash'
   args:
   - '-c'
   - >
+    gcloud container clusters get-credentials --zone=$_ZONE $_CLUSTER;
     skaffold run -f=skaffold.yaml --default-repo=gcr.io/$PROJECT_ID;
 
 # Add more power, and more time, for heavy Skaffold build
