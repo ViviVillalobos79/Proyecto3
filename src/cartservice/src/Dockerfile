@@ -18,7 +18,7 @@ WORKDIR /app
 COPY cartservice.csproj .
 RUN dotnet restore cartservice.csproj
 COPY . .
-RUN dotnet publish cartservice.csproj -p:PublishSingleFile=true --self-contained true -p:PublishTrimmed=False -p:TrimMode=Link -c release -o /cartservice --no-restore
+RUN dotnet publish cartservice.csproj -p:PublishSingleFile=false --self-contained false -p:PublishTrimmed=False -p:TrimMode=Link -c release -o /cartservice --no-restore
 
 # https://mcr.microsoft.com/v2/dotnet/runtime-deps/tags/list
 FROM mcr.microsoft.com/dotnet/runtime-deps:6.0.5-alpine3.14-amd64
