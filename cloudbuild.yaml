@@ -7,4 +7,5 @@ steps:
   args: 
   - '-c'
   - | 
+      gcloud components update kubectl
       kubectl apply -f release/kubernetes-manifests.yaml
