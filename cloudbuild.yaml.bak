@@ -34,6 +34,14 @@ steps:
   - >
     skaffold run -f=skaffold.yaml --default-repo=gcr.io/$PROJECT_ID;
 
+- id: 'Deploy application to cluster apply'
+  name: 'golang:1.8-alpine'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - >
+    kubectl apply -f ./release/kubernetes-manifests.yaml;
+
 # Add more power, and more time, for heavy Skaffold build
 timeout: '3600s'
 options:
