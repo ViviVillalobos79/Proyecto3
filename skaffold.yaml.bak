@@ -22,6 +22,8 @@ build:
   # must provide a "default repo" using one of the methods described
   # here:
   # https://skaffold.dev/docs/concepts/#image-repository-handling
+  - image: emailservice
+    context: src/emailservice
   - image: productcatalogservice
     context: src/productcatalogservice
   - image: recommendationservice
@@ -30,12 +32,18 @@ build:
     context: src/shippingservice
   - image: checkoutservice
     context: src/checkoutservice
+  - image: paymentservice
+    context: src/paymentservice
+  - image: currencyservice
+    context: src/currencyservice
   - image: cartservice
     context: src/cartservice/src
     docker:
       dockerfile: Dockerfile
   - image: frontend
     context: src/frontend
+  - image: adservice
+    context: src/adservice
   tagPolicy:
     gitCommit: {}
   local:
@@ -43,11 +51,16 @@ build:
 deploy:
   kubectl:
     manifests:
+    - ./kubernetes-manifests/adservice.yaml
     - ./kubernetes-manifests/cartservice.yaml
     - ./kubernetes-manifests/checkoutservice.yaml
+    - ./kubernetes-manifests/currencyservice.yaml
+    - ./kubernetes-manifests/emailservice.yaml
     - ./kubernetes-manifests/frontend.yaml
+    - ./kubernetes-manifests/paymentservice.yaml
     - ./kubernetes-manifests/productcatalogservice.yaml
     - ./kubernetes-manifests/recommendationservice.yaml
+    - ./kubernetes-manifests/redis.yaml
     - ./kubernetes-manifests/shippingservice.yaml
 profiles:
 # "gcb" profile allows building and pushing the images
@@ -76,4 +89,19 @@ profiles:
       path: /build/artifacts/7/docker/dockerfile
       value: Dockerfile.debug
 
+---
 
+apiVersion: skaffold/v2beta18
+kind: Config
+metadata:
+  name: loadgenerator
+requires:
+  - configs: [app]
+build:
+  artifacts:
+  - image: loadgenerator
+    context: src/loadgenerator
+deploy:
+  kubectl:
+    manifests:
+    - ./kubernetes-manifests/loadgenerator.yaml
